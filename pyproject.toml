@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=64.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "forecast-anything"
+version = "0.1.0"
+description = "A framework for storing and evaluating forecasts of any type"
+requires-python = ">=3.10"
+dependencies = [
+    "sqlalchemy>=2.0",
+    "pydantic>=2.0",
+    "scipy>=1.11",
+    "numpy>=1.24",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0", "pytest-cov"]
