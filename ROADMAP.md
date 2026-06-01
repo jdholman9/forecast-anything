@@ -15,13 +15,12 @@ The system already does everything needed to be useful for a single user — me,
 
 **This is the entire point of the system.** Everything in later phases is leverage on top of this loop running.
 
-**Concrete TODO:** a small script (`scripts/score_latest_actuals.py` or similar) that runs monthly via cron or scheduled task:
-- Pulls the latest published mf-permits actuals from wherever they're tracked
-- Calls `store.record_actual()` for each event whose resolution date has passed
-- Calls `store.score_event()` for those events
-- Emits a digest: per-model CRPS, week-over-week leaderboard change, and a "calibration call" (too tight / too wide / biased) using empirical-vs-forecast quantile coverage
+**Status — initial loop:** `scripts/score_latest_actuals.py` is in place. Reads the mf-permits actuals CSV, matches dates to events, records any new actuals, scores the forecasts, and prints a ranked CRPS leaderboard per event. Runs as a no-op today (no published actuals overlap the forecast window yet — first match will land around end of June 2026 when May 2026 NSA permits publish). Verified end-to-end with a temp actual.
 
-No new framework code required. Pure orchestration over what already exists.
+**Still on the Phase 0 wish list:**
+- Week-over-week leaderboard delta (requires persisting prior-run scores; can land once there's >1 month of real actuals to compare).
+- Calibration call ("too tight / too wide / biased") via empirical-vs-forecast quantile coverage on each scored event.
+- Auto-run via Windows scheduled task or cron once monthly, after the upstream `00_fetch_data.py` refreshes the actuals CSV.
 
 ---
 
